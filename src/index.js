@@ -2,6 +2,7 @@
 const express = require('express');
 const patientRoutes = require('./routes/patient');
 const assistantRoutes = require('./routes/assistant');
+const cors = require('cors'); // Ajoute cette ligne
 
 require('dotenv').config();
 
@@ -10,6 +11,13 @@ require('dotenv').config();
  * @type {import('express').Application}
  */
 const app = express();
+
+// Middleware pour activer CORS
+app.use(cors({
+  origin: 'http://localhost:5173', // Autorise uniquement le frontend sur ce port
+  methods: ['GET', 'POST', 'PATCH'], // Méthodes HTTP autorisées
+  allowedHeaders: ['Content-Type', 'Authorization'], // En-têtes autorisés
+}));
 
 // Middleware pour parser les requêtes JSON
 app.use(express.json());
@@ -21,5 +29,5 @@ app.use('/api/assistants', assistantRoutes);
 // Démarrage du serveur
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Serveur démarré sur le port ${PORT}`);
+  console.log(`Serveur démarré sur le port ${PORT}`);
 });
