@@ -2,6 +2,7 @@
 const express = require('express');
 const patientRoutes = require('./routes/patient');
 const assistantRoutes = require('./routes/assistant');
+const medicalRecordRoutes = require('./routes/medical_record');
 const cors = require('cors'); // Ajoute cette ligne
 
 require('dotenv').config();
@@ -25,6 +26,7 @@ app.use(express.json());
 // Routes de l'API
 app.use('/api/patients', patientRoutes);
 app.use('/api/assistants', assistantRoutes);
+app.use('/api/medical-records', medicalRecordRoutes);
 
 // Démarrage du serveur
 const PORT = process.env.PORT || 5000;

@@ -79,4 +79,39 @@ router.patch('/validate/:id', authenticateToken, async (req, res) => {
     }
 });
 
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email et mot de passe sont requis' });
+  }
+
+  try {
+    const patient = await Patient.findByEmail(email);
+    if (!patient) {
+      return res.status(401).json({ message: 'Email ou mot de passe incorrect' });
+    }
+
+    const isMatch = await bcrypt.compare(password, patient.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Email ou mot de passe incorrect' });
+    }
+
+    const token = jwt.sign(
+      { id: patient.id, email: patient.email, role: 'patient' },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    res.status(200).json({
+      message: 'Connexion réussie',
+      token,
+      patient: { id: patient.id, first_name: patient.first_name, last_name: patient.last_name, email: patient.email },
+    });
+  } catch (error) {
+    console.error('Erreur lors de la connexion :', error);
+    res.status(500).json({ message: 'Erreur serveur lors de la connexion' });
+  }
+});
+
 module.exports = router;
