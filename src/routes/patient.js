@@ -1,5 +1,7 @@
 // src/routes/patient.js
 const express = require('express');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 const Patient = require('../models/patient');
 const { validateRegistration } = require('../middleware/validate');

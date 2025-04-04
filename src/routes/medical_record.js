@@ -5,7 +5,11 @@ const { authenticateToken } = require('../middleware/auth');
 
 router.post('/create', authenticateToken, async (req, res) => {
   const { patient_id, record_type, details } = req.body;
-  const doctorId = req.user.id;
+  const doctorId = req.user.role === 'doctor' ? req.user.id : null;
+
+  if (!doctorId) {
+    return res.status(403).json({ message: 'Seul un médecin peut créer un dossier médical' });
+  }
 
   try {
     const newRecord = await MedicalRecord.create(patient_id, doctorId, record_type, details);

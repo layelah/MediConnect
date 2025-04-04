@@ -1,0 +1,17 @@
+http://localhost:5173/login
+
+connexion :
+
+Email : marie.curie@example.com
+Mot de passe : doctor123
+Rôle : doctor
+
+redirection : http://localhost:5173/medical-record
+
+
+http://localhost:5173/appointments  :: http://localhost:5173/appointments
+
+http://localhost:5173/medical-record  ::creation d'un dossier medical
+
+
+http://localhost:5173/prescriptions :: créer une prescription
